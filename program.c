@@ -1,3 +1,5 @@
+//this program will verify if the program is valid or not
+
 #include<stdio.h>
 #include<fcntl.h>
 #include<stdlib.h>
