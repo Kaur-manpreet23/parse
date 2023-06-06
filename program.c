@@ -17,7 +17,7 @@ typedef struct identifiers{
 char reserved[30][20] = {"commbox","var","const","integer","boolean","address",":",";","=","begin","send"
 	,"to","recv","from","timeout","activate","with",",",">>>","(",")","+","-","*","/","|","end","and","or","not"};
 
-char separators[9]={':','=',',',';','+','-','*','/','>'};
+char separators[10]={':','=',',',';','+','-','*','/','>','|'};
 enum tokens{COMMBOX,VAR,CONST,INTEGER,BOOLEAN,ADDRESS,COLON,SEMICOLON,EQUAL,BEGIN,SEND,TO,RECEIVE,
 	FROM,TIMEOUT,ACTIVATE,WITH,COMA,GT3,OB,CB,PLUS,MINUS,MUL,DIV,PIPE,END,AND,OR,NOT};
 
@@ -44,10 +44,11 @@ int isSeparator(char a);
 
 int next_ptr=0;
 char *curr;
+FILE *buf;
 
 int isSeparator(char a){
 	int i=0,f=0;
-	while(i<9 && f==0)
+	while(i<10 && f==0)
 	{
 		if(separators[i]==a)
 			f=1;
@@ -55,7 +56,57 @@ int isSeparator(char a){
 	}
 return f;
 }
+/*
+char *next(){
+        char c;
+        char *word = (char *)malloc(sizeof(char));
+        int flag=0,j=0;
+        while((c=getc(buf))!=EOF && flag==0)
+        {
+                if(c==' '||c=='\n'||c=='\t'){
+                        if(j!=0)
+                                {
+                                        flag=1;
+                                        c=ungetc(c,buf);
+                                }
+                }
+                else if(isSeparator(c))
+                {
+                        if(j==0)
+                        {
+                        //      printf("HELLO\n");
+                                while(isSeparator(c) && c!=EOF)
+                                {
+                                        word[j]=c;
+                                        j=j+1;
+                                        c=getc(buf);
+                                }
+                                flag=1;
+                                if(c!=EOF)
+                                        c=ungetc(c,buf);
+                                        c=ungetc(c,buf);
+                                //printf("%c ",c);
+                        }
+                        else
+                        {
+                                flag=1;
+                                c=ungetc(c,buf);
+                                c=ungetc(c,buf);
+                                //printf(" %c ",c);
+                        }
+                }
+                else
+                {
+                        word[j]=c;
+                        j=j+1;
+                }
+        }
+        if(c==EOF && j==0)
+                word=NULL;
+return word;
+}
 
+*/
 void grow(i *s1){
 	if(s1->size==s1->cap){
 		s1->cap=s1->cap * 2;
@@ -678,3 +729,22 @@ int main(){
 	else
 		printf("\tVALID SYNTAX\n");
 }
+/*
+int main(){
+FILE *ptr;
+ptr=fopen("email","r");
+if(ptr==NULL)
+        printf("ERROR IN FILE OPENING\n");
+else{
+        buf=ptr;
+        curr=next();
+        while(curr!=NULL)
+        {
+        //curr=next();
+        printf("%s\n",curr);
+        curr=next();
+        }
+        fclose(ptr);
+}
+}*/
+
